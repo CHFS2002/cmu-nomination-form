@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Student Nomination Form — Faculty of Agriculture, CMU | HZAU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+<style>
+  /* ─── TOKENS ─────────────────────────────────────────── */
+  :root {
+    --bg:         #F8F7F4;
+    --surface:    #FFFFFF;
+    --border:     #E4E1D9;
+    --border-focus: #2D6A4F;
+    --text:       #1A1917;
+    --text-muted: #6B6860;
+    --accent:     #2D6A4F;
+    --accent-light:#E8F4EE;
+    --accent-dark: #1B4332;
+    --danger:     #C0392B;
+    --warning-bg: #FFF8E7;
+    --warning-border:#E8C84A;
+    --radius:     10px;
+    --radius-lg:  16px;
+    --shadow:     0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.04);
+    --shadow-lg:  0 8px 32px rgba(0,0,0,.08);
+    --font:       'Figtree', sans-serif;
+    --font-serif: 'DM Serif Display', serif;
+    --transition: 200ms ease;
+  }
+
+  /* ─── RESET ─────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  a { color: var(--accent); }
+
+  /* ─── LAYOUT ─────────────────────────────────────────── */
+  .page-shell {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─────────────────────────────────────────── */
+  .site-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-logo {
+    width: 48px;
+    height: 48px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .header-logo svg { width: 26px; height: 26px; fill: white; }
+  .header-text h1 {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--text);
+  }
+  .header-text p {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  /* ─── PROGRESS BAR ───────────────────────────────────── */
+  .progress-wrap {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    position: sticky;
+    top: 89px;
+    z-index: 99;
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .progress-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+  .progress-counter {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+  .progress-track {
+    height: 4px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 99px;
+    transition: width 400ms cubic-bezier(.4,0,.2,1);
+  }
+  .step-dots {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .step-dot {
+    height: 4px;
+    flex: 1;
+    border-radius: 99px;
+    background: var(--border);
+    transition: background var(--transition);
+  }
+  .step-dot.done { background: var(--accent-dark); }
+  .step-dot.active { background: var(--accent); }
+
+  /* ─── MAIN ───────────────────────────────────────────── */
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+    width: 100%;
+  }
+
+  /* ─── STEP PANEL ─────────────────────────────────────── */
+  .step-panel {
+    display: none;
+    animation: fadeUp 300ms ease both;
+  }
+  .step-panel.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .step-heading {
+    margin-bottom: 28px;
+  }
+  .step-number {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .step-title {
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--text);
+  }
+  .step-desc {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  /* ─── CARD ───────────────────────────────────────────── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+  }
+
+  /* ─── FORM ELEMENTS ──────────────────────────────────── */
+  .field-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .field-grid.cols-1 { grid-template-columns: 1fr; }
+  .field-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  @media (max-width: 560px) {
+    .field-grid, .field-grid.cols-3 { grid-template-columns: 1fr; }
+  }
+  .field-group { display: flex; flex-direction: column; gap: 6px; }
+  .field-group.span-2 { grid-column: span 2; }
+  @media (max-width: 560px) { .field-group.span-2 { grid-column: span 1; } }
+
+  label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: .01em;
+  }
+  label .req { color: var(--danger); margin-left: 2px; }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="date"],
+  input[type="number"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 10px 14px;
+    font-family: var(--font);
+    font-size: 0.9rem;
+    color: var(--text);
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(45,106,79,.1);
+    background: #fff;
+  }
+  input::placeholder, textarea::placeholder { color: #B5B3AD; }
+  textarea { resize: vertical; min-height: 90px; }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236B6860' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    cursor: pointer;
+  }
+
+  /* Checkbox / Radio */
+  .check-group { display: flex; flex-direction: column; gap: 10px; }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg);
+    transition: border-color var(--transition), background var(--transition);
+  }
+  .check-item:has(input:checked) {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+  .check-item input[type="checkbox"],
+  .check-item input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .check-label { font-size: 0.875rem; color: var(--text); }
+  .check-label small { display: block; color: var(--text-muted); font-size: 0.78rem; margin-top: 2px; }
+
+  /* Inline checkboxes */
+  .check-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .check-inline .check-item {
+    flex: 1;
+    min-width: 140px;
+  }
+
+  /* ─── FILE UPLOAD ────────────────────────────────────── */
+  .file-upload-area {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color var(--transition), background var(--transition);
+    background: var(--bg);
+    position: relative;
+  }
+  .file-upload-area:hover,
+  .file-upload-area.dragover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+  .file-upload-area input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+  .file-upload-icon { font-size: 1.5rem; margin-bottom: 6px; }
+  .file-upload-text { font-size: 0.85rem; color: var(--text-muted); }
+  .file-upload-text strong { color: var(--accent); }
+  .file-upload-hint { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+  .file-chosen {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: var(--accent-light);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    font-size: 0.82rem;
+    color: var(--accent-dark);
+  }
+  .file-chosen .remove-file {
+    margin-left: auto;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1;
+    background: none;
+    border: none;
+    padding: 0 2px;
+  }
+  .file-chosen .remove-file:hover { color: var(--danger); }
+
+  /* ─── SECTION DIVIDER ────────────────────────────────── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 22px 0;
+  }
+
+  /* ─── FIELD HINT ─────────────────────────────────────── */
+  .field-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .field-error {
+    font-size: 0.75rem;
+    color: var(--danger);
+    margin-top: 4px;
+    display: none;
+  }
+  .field-group.has-error input,
+  .field-group.has-error select,
+  .field-group.has-error textarea {
+    border-color: var(--danger);
+  }
+  .field-group.has-error .field-error { display: block; }
+
+  /* ─── NOTICE ─────────────────────────────────────────── */
+  .notice {
+    background: var(--warning-bg);
+    border: 1px solid var(--warning-border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    font-size: 0.85rem;
+    color: #7A6000;
+    margin-bottom: 20px;
+  }
+  .notice strong { display: block; margin-bottom: 4px; }
+
+  /* ─── NAV BUTTONS ────────────────────────────────────── */
+  .nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 28px;
+    gap: 12px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 24px;
+    border-radius: var(--radius);
+    font-family: var(--font);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: all var(--transition);
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+  .btn-primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border-color: var(--border);
+  }
+  .btn-secondary:hover { background: var(--bg); border-color: var(--text-muted); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .btn-icon { font-size: 1rem; }
+
+  /* ─── SUMMARY PAGE ───────────────────────────────────── */
+  .summary-section { margin-bottom: 24px; }
+  .summary-section-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 500px) { .summary-grid { grid-template-columns: 1fr; } }
+  .summary-item { }
+  .summary-item dt {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .summary-item dd {
+    font-size: 0.875rem;
+    color: var(--text);
+    font-weight: 500;
+    word-break: break-word;
+  }
+
+  /* ─── SUCCESS SCREEN ─────────────────────────────────── */
+  #success-screen {
+    display: none;
+    text-align: center;
+    padding: 60px 24px;
+  }
+  #success-screen.active { display: block; }
+  .success-icon {
+    width: 72px;
+    height: 72px;
+    background: var(--accent-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 2rem;
+  }
+  #success-screen h2 {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 400;
+    margin-bottom: 12px;
+  }
+  #success-screen p { color: var(--text-muted); font-size: 0.9rem; max-width: 400px; margin: 0 auto; }
+
+  /* ─── LOADING OVERLAY ────────────────────────────────── */
+  #loading-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,.85);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+  #loading-overlay.active { display: flex; }
+  .spinner {
+    width: 40px; height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 700ms linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading-overlay p { font-size: 0.9rem; color: var(--text-muted); }
+
+  /* ─── FOOTER ─────────────────────────────────────────── */
+  footer {
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    background: var(--surface);
+  }
+</style>
+</head>
+<body>
+<div class="page-shell">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-logo">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
+      </svg>
+    </div>
+    <div class="header-text">
+      <h1>Student Nomination Form</h1>
+      <p>Exchange / Short-term Academic Program &nbsp;·&nbsp; For the Faculty of Agriculture, Chiang Mai University, Thailand &nbsp;·&nbsp; <strong style="color:var(--accent)">18 July – 26 July 2026</strong></p>
+    </div>
+  </header>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-meta">
+      <span class="progress-label" id="section-label">Sending Institution</span>
+      <span class="progress-counter" id="step-counter">Step 1 of 9</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:11%"></div></div>
+    <div class="step-dots" id="step-dots"></div>
+  </div>
+
+  <!-- MAIN -->
+  <main id="form-main">
+
+    <!-- ── STEP 1: Sending Institution ── -->
+    <div class="step-panel active" data-step="1">
+      <div class="step-heading">
+        <div class="step-number">Step 1 of 9</div>
+        <h2 class="step-title">Sending Institution</h2>
+        <p class="step-desc">Details about the institution nominating this student. Pre-filled for HZAU — update if needed.</p>
+      </div>
+      <div class="notice" style="background:#EAF4FF; border-color:#90C8F0; color:#1A4A6E; margin-bottom:20px">
+        <strong>📅 Program: Exchange / Short-term Academic Program</strong>
+        Faculty of Agriculture, Chiang Mai University, Thailand &nbsp;·&nbsp; Tentative dates: <strong>18 July – 26 July 2026</strong><br>
+        Nominating institution: <strong>College of Horticulture &amp; Forestry Sciences, Huazhong Agricultural University (HZAU)</strong>
+      </div>
+      <div class="card">
+        <div class="field-grid">
+          <div class="field-group">
+            <label>Name of Institution <span class="req">*</span></label>
+            <input type="text" id="inst-name" placeholder="College of Horticulture & Forestry Sciences, HZAU" />
+            <span class="field-error">This field is required.</span>
+          </div>
+          <div class="field-group">
+            <label>Country <span class="req">*</span></label>
+            <input type="text" id="inst-country" placeholder="China" />
+            <span class="field-error">This field is required.</span>
+          </div>
+          <div class="field-group">
+            <label>Faculty / School / Department <span class="req">*</span></label>
+            <input type="text" id="inst-faculty" placeholder="College of Horticulture & Forestry Sciences" />
+            <span class="field-error">This field is required.</span>
+          </div>
+          <div class="field-group">
+            <label>Name of Coordinator <span class="req">*</span></label>
+            <input type="text" id="inst-coordinator" placeholder="e.g. Prof. Li Wei" />
+            <span class="field-error">This field is required.</span>
+          </div>
+          <div class="field-group">
+            <label>Position</label>
+            <input type="text" id="inst-position" placeholder="e.g. International Exchange Coordinator" />
+          </div>
+          <div class="field-group">
+            <label>Email <span class="req">*</span></label>
+            <input type="email" id="inst-email" placeholder="coordinator@mail.hzau.edu.cn" />
+            <span class="field-error">Please enter a valid email.</span>
+          </div>
+          <div class="field-group span-2">
+            <label>Telephone / Mobile</label>
+            <input type="tel" id="inst-phone" placeholder="+86 27 8728 XXXX" />
+          </div>
+        </div>
+      </div>
+      <div class="nav-bar">
+        <span></span>
+        <button class="btn btn-primary" onclick="goNext(1)">Continue <span class="btn-icon">→</span></button>
+      </div>
+    </div>
+
+    <!-- ── STEP 2: Student Personal Info ── -->
+    <div class="step-panel" data-step="2">
+      <div class="step-heading">
+        <div class="step-number">Step 2 of 9</div>
+        <h2 class="step-title">Student Personal Information</h2>
+        <p class="step-desc">Details must match the student's passport exactly.</p>
+      </div>
+      <div class="card">
+        <div class="field-grid">
+          <div class="field-group span-2">
+            <label>Full Name (as in passport) <span class="req">*</span></label>
+            <input type="text" id="stu-name" placeholder="As printed in passport (e.g. ZHANG WEI)" />
+            <span class="field-error">This field is required.</span>
+          </div>
+          <div class="field-group">
+            <label>Gender</label>
+            <select id="stu-gender">
+              <option value="">Select…</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Non-binary / Third gender</option>
+              <option>Prefer not to say</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Date of Birth <span class="req">*</span></label>
+            <input type="date" id="stu-dob" />
+            <span class="field-error">This field is required.</span>
+          </div>
+          <div class="field-group">
+            <label>Nationality <span class="req">*</span></label>
+            <input type="text" id="stu-nationality" placeholder="e.g. Chinese" />
+            <span class="field-error">This field is required.</span>
+          </div>
+          <div class="field-group">
+            <label>Passport Number <span class="req">*</span></label>
+            <input type="text" id="stu-passport" placeholder="e.g. E12345678" />
+            <span class="field-error">This field is required.</span>
+          </div>
+          <div class="field-group">
+            <label>Passport Expiry Date <span class="req">*</span></label>
+            <input type="date" id="stu-passport-expiry" />
+            <span class="field-error">This field is required.</span>
+          </div>
+          <div class="field-group">
+            <label>Student ID Number <span class="req">*</span></label>
+            <input type="text" id="stu-id" placeholder="HZAU Student ID" />
+            <span class="field-error">This field is required.</span>
+          </div>
+          <div class="field-group">
+            <label>Degree Level <span class="req">*</span></label>
+            <select id="stu-degree">
+              <option value="">Select…</option>
+              <option>Bachelor's</option>
+              <option>Master's</option>
+              <option>Doctoral</option>
+            </select>
+            <span class="field-error">Please select a degree level.</span>
+          </div>
+          <div class="field-group">
+            <label>Year of Study</label>
+            <select id="stu-year">
+              <option value="">Select…</option>
+              <option>1st Year</option>
+              <option>2nd Year</option>
+              <option>3rd Year</option>
+              <option>4th Year</option>
+              <option>5th Year</option>
+              <option>6th Year</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Major / Program <span class="req">*</span></label>
+            <input type="text" id="stu-major" placeholder="e.g. Horticulture, Forestry, Landscape Architecture" />
+            <span class="field-error">This field is required.</span>
+          </div>
+        </div>
+      </div>
+      <div class="nav-bar">
+        <button class="btn btn-secondary" onclick="goBack(2)"><span class="btn-icon">←</span> Back</button>
+        <button class="btn btn-primary" onclick="goNext(2)">Continue <span class="btn-icon">→</span></button>
+      </div>
+    </div>
+
+    <!-- ── STEP 3: Contact Information ── -->
+    <div class="step-panel" data-step="3">
+      <div class="step-heading">
+        <div class="step-number">Step 3 of 9</div>
+        <h2 class="step-title">Contact Information</h2>
+        <p class="step-desc">How to reach the student directly.</p>
+      </div>
+      <div class="card">
+        <div class="field-grid cols-1">
+          <div class="field-group">
+            <label>Student Email <span class="req">*</span></label>
+            <input type="email" id="con-email" placeholder="student@mail.hzau.edu.cn" />
+            <span class="field-error">Please enter a valid email.</span>
+          </div>
+          <div class="field-group">
+            <label>Mobile / WhatsApp / WeChat</label>
+            <input type="text" id="con-mobile" placeholder="+86 138 XXXX XXXX" />
+            <p class="field-hint">Include country code. Enter the platform in brackets if needed, e.g. WeChat ID: username</p>
+          </div>
+          <div class="field-group">
+            <label>Home Address</label>
+            <textarea id="con-address" placeholder="Street / Dorm, Wuhan, Hubei Province, China, Postal Code"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="nav-bar">
+        <button class="btn btn-secondary" onclick="goBack(3)"><span class="btn-icon">←</span> Back</button>
+        <button class="btn btn-primary" onclick="goNext(3)">Continue <span class="btn-icon">→</span></button>
+      </div>
+    </div>
+
+    <!-- ── STEP 4: Academic Information ── -->
+    <div class="step-panel" data-step="4">
+      <div class="step-heading">
+        <div class="step-number">Step 4 of 9</div>
+        <h2 class="step-title">Academic Information</h2>
+        <p class="step-desc">Academic background and interests relevant to the program.</p>
+      </div>
+      <div class="card">
+        <div class="field-grid cols-1">
+          <div class="field-group">
+            <label>Area of Study / Academic Interest <span class="req">*</span></label>
+            <input type="text" id="ac-area" placeholder="e.g. Horticulture, Tropical Forestry, Plant Science" />
+            <span class="field-error">This field is required.</span>
+          </div>
+          <div class="field-group">
+            <label>Research Interest (if any)</label>
+            <textarea id="ac-research" placeholder="Briefly describe any research interests or ongoing projects…"></textarea>
+          </div>
+          <div class="field-group">
+            <label>English Proficiency</label>
+            <select id="ac-english">
+              <option value="">Select…</option>
+              <option>Native speaker</option>
+              <option>IELTS 7.0 or above</option>
+              <option>IELTS 6.0–6.5</option>
+              <option>IELTS below 6.0</option>
+              <option>TOEFL iBT 90+</option>
+              <option>TOEFL iBT 70–89</option>
+              <option>No formal test — fluent</option>
+              <option>No formal test — intermediate</option>
+              <option>No formal test — basic</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Relevant Courses / Background Related to the Program</label>
+            <textarea id="ac-courses" placeholder="List relevant courses taken at HZAU…"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="nav-bar">
+        <button class="btn btn-secondary" onclick="goBack(4)"><span class="btn-icon">←</span> Back</button>
+        <button class="btn btn-primary" onclick="goNext(4)">Continue <span class="btn-icon">→</span></button>
+      </div>
+    </div>
+
+    <!-- ── STEP 5: Funding Information ── -->
+    <div class="step-panel" data-step="5">
+      <div class="step-heading">
+        <div class="step-number">Step 5 of 9</div>
+        <h2 class="step-title">Funding Information</h2>
+        <p class="step-desc">Source of financial support during the program.</p>
+      </div>
+      <div class="notice">
+        <strong>⚠️ Important Notice</strong>
+        The Faculty of Agriculture, Chiang Mai University does <strong>not</strong> provide financial support to exchange or short-term students. Please ensure the student has confirmed their funding source.
+      </div>
+      <div class="card">
+        <div class="field-grid cols-1">
+          <div class="field-group">
+            <label>Source of Financial Support <span class="req">*</span></label>
+            <div class="check-group">
+              <label class="check-item">
+                <input type="radio" name="funding" value="Self-funded" id="fund-self" />
+                <span class="check-label">Self-funded</span>
+              </label>
+              <label class="check-item">
+                <input type="radio" name="funding" value="Supported by Home Institution" id="fund-inst" />
+                <span class="check-label">Supported by Home Institution</span>
+              </label>
+              <label class="check-item">
+                <input type="radio" name="funding" value="Other" id="fund-other" />
+                <span class="check-label">Other</span>
+              </label>
+            </div>
+            <input type="text" id="fund-other-detail" placeholder="Please specify…" style="margin-top:10px; display:none" />
+          </div>
+          <div class="divider"></div>
+          <div class="field-group">
+            <label class="check-item" style="cursor:pointer">
+              <input type="checkbox" id="fund-confirm" />
+              <span class="check-label">
+                I confirm that the student understands no financial support will be provided by the Faculty of Agriculture, Chiang Mai University.
+                <span class="req">*</span>
+              </span>
+            </label>
+            <span class="field-error" id="fund-confirm-error">Please confirm before continuing.</span>
+          </div>
+        </div>
+      </div>
+      <div class="nav-bar">
+        <button class="btn btn-secondary" onclick="goBack(5)"><span class="btn-icon">←</span> Back</button>
+        <button class="btn btn-primary" onclick="goNext(5)">Continue <span class="btn-icon">→</span></button>
+      </div>
+    </div>
+
+    <!-- ── STEP 6: Health & Special Support ── -->
+    <div class="step-panel" data-step="6">
+      <div class="step-heading">
+        <div class="step-number">Step 6 of 9</div>
+        <h2 class="step-title">Health &amp; Special Support</h2>
+        <p class="step-desc">Help us ensure the student's safety and comfort. Leave blank if not applicable.</p>
+      </div>
+      <div class="card">
+        <div class="field-grid cols-1">
+          <div class="field-group">
+            <label>Food Allergies or Dietary Restrictions</label>
+            <input type="text" id="health-food" placeholder="e.g. Nut allergy, Vegetarian, Halal, Kosher" />
+          </div>
+          <div class="field-group">
+            <label>Medical Conditions Requiring Special Attention</label>
+            <textarea id="health-medical" placeholder="e.g. Asthma (carries inhaler), Diabetes (Type 1)…"></textarea>
+          </div>
+          <div class="field-group">
+            <label>Accessibility or Special Support Needs</label>
+            <textarea id="health-access" placeholder="e.g. Wheelchair access required, hearing impairment…"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="nav-bar">
+        <button class="btn btn-secondary" onclick="goBack(6)"><span class="btn-icon">←</span> Back</button>
+        <button class="btn btn-primary" onclick="goNext(6)">Continue <span class="btn-icon">→</span></button>
+      </div>
+    </div>
+
+    <!-- ── STEP 7: Emergency Contact ── -->
+    <div class="step-panel" data-step="7">
+      <div class="step-heading">
+        <div class="step-number">Step 7 of 9</div>
+        <h2 class="step-title">Emergency Contact</h2>
+        <p class="step-desc">A person to contact in case of emergency (not the student).</p>
+      </div>
+      <div class="card">
+        <div class="field-grid">
+          <div class="field-group">
+            <label>Name <span class="req">*</span></label>
+            <input type="text" id="emg-name" placeholder="Full name" />
+            <span class="field-error">This field is required.</span>
+          </div>
+          <div class="field-group">
+            <label>Relationship <span class="req">*</span></label>
+            <select id="emg-relationship">
+              <option value="">Select…</option>
+              <option>Parent</option>
+              <option>Guardian</option>
+              <option>Sibling</option>
+              <option>Spouse / Partner</option>
+              <option>Friend</option>
+              <option>Other</option>
+            </select>
+            <span class="field-error">Please select a relationship.</span>
+          </div>
+          <div class="field-group">
+            <label>Telephone</label>
+            <input type="tel" id="emg-phone" placeholder="+86 138 XXXX XXXX" />
+          </div>
+          <div class="field-group">
+            <label>Email</label>
+            <input type="email" id="emg-email" placeholder="emergency@mail.hzau.edu.cn" />
+          </div>
+        </div>
+      </div>
+      <div class="nav-bar">
+        <button class="btn btn-secondary" onclick="goBack(7)"><span class="btn-icon">←</span> Back</button>
+        <button class="btn btn-primary" onclick="goNext(7)">Continue <span class="btn-icon">→</span></button>
+      </div>
+    </div>
+
+    <!-- ── STEP 8: Required Documents ── -->
+    <div class="step-panel" data-step="8">
+      <div class="step-heading">
+        <div class="step-number">Step 8 of 9</div>
+        <h2 class="step-title">Required Documents</h2>
+        <p class="step-desc">Upload all supporting documents. Accepted formats: PDF, JPG, PNG (max 5 MB each).</p>
+      </div>
+      <div class="card">
+        <div class="field-grid cols-1">
+
+          <div class="field-group">
+            <label>Copy of Passport <span class="req">*</span></label>
+            <div class="file-upload-area" id="drop-passport">
+              <input type="file" id="file-passport" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile('passport',this)" />
+              <div class="file-upload-icon">🛂</div>
+              <div class="file-upload-text"><strong>Click to upload</strong> or drag &amp; drop</div>
+              <div class="file-upload-hint">PDF, JPG or PNG · max 5 MB</div>
+            </div>
+            <div class="file-chosen" id="chosen-passport" style="display:none">
+              <span>📄</span><span id="name-passport"></span>
+              <button class="remove-file" onclick="removeFile('passport')">✕</button>
+            </div>
+            <span class="field-error" id="err-passport">Passport copy is required.</span>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="field-group">
+            <label>Recent Academic Transcript <span class="req">*</span></label>
+            <div class="file-upload-area" id="drop-transcript">
+              <input type="file" id="file-transcript" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile('transcript',this)" />
+              <div class="file-upload-icon">📋</div>
+              <div class="file-upload-text"><strong>Click to upload</strong> or drag &amp; drop</div>
+              <div class="file-upload-hint">PDF, JPG or PNG · max 5 MB</div>
+            </div>
+            <div class="file-chosen" id="chosen-transcript" style="display:none">
+              <span>📄</span><span id="name-transcript"></span>
+              <button class="remove-file" onclick="removeFile('transcript')">✕</button>
+            </div>
+            <span class="field-error" id="err-transcript">Academic transcript is required.</span>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="field-group">
+            <label>Certificate of Enrollment / Student Status <span class="req">*</span></label>
+            <div class="file-upload-area" id="drop-enrollment">
+              <input type="file" id="file-enrollment" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile('enrollment',this)" />
+              <div class="file-upload-icon">🎓</div>
+              <div class="file-upload-text"><strong>Click to upload</strong> or drag &amp; drop</div>
+              <div class="file-upload-hint">PDF, JPG or PNG · max 5 MB</div>
+            </div>
+            <div class="file-chosen" id="chosen-enrollment" style="display:none">
+              <span>📄</span><span id="name-enrollment"></span>
+              <button class="remove-file" onclick="removeFile('enrollment')">✕</button>
+            </div>
+            <span class="field-error" id="err-enrollment">Enrollment certificate is required.</span>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="field-group">
+            <label>Recommendation Letter from Home Institution <span class="req">*</span></label>
+            <div class="file-upload-area" id="drop-recommendation">
+              <input type="file" id="file-recommendation" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile('recommendation',this)" />
+              <div class="file-upload-icon">✉️</div>
+              <div class="file-upload-text"><strong>Click to upload</strong> or drag &amp; drop</div>
+              <div class="file-upload-hint">PDF, JPG or PNG · max 5 MB</div>
+            </div>
+            <div class="file-chosen" id="chosen-recommendation" style="display:none">
+              <span>📄</span><span id="name-recommendation"></span>
+              <button class="remove-file" onclick="removeFile('recommendation')">✕</button>
+            </div>
+            <span class="field-error" id="err-recommendation">Recommendation letter is required.</span>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="field-group">
+            <label>Proof of English Proficiency <span style="color:var(--text-muted);font-weight:400">(if available)</span></label>
+            <div class="file-upload-area" id="drop-english">
+              <input type="file" id="file-english" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile('english',this)" />
+              <div class="file-upload-icon">🗣️</div>
+              <div class="file-upload-text"><strong>Click to upload</strong> or drag &amp; drop</div>
+              <div class="file-upload-hint">PDF, JPG or PNG · max 5 MB · Optional</div>
+            </div>
+            <div class="file-chosen" id="chosen-english" style="display:none">
+              <span>📄</span><span id="name-english"></span>
+              <button class="remove-file" onclick="removeFile('english')">✕</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="nav-bar">
+        <button class="btn btn-secondary" onclick="goBack(8)"><span class="btn-icon">←</span> Back</button>
+        <button class="btn btn-primary" onclick="goNext(8)">Continue <span class="btn-icon">→</span></button>
+      </div>
+    </div>
+
+    <!-- ── STEP 9: Coordinator Confirmation ── -->
+    <div class="step-panel" data-step="9">
+      <div class="step-heading">
+        <div class="step-number">Step 9 of 9</div>
+        <h2 class="step-title">Coordinator Confirmation</h2>
+        <p class="step-desc">To be completed by the responsible coordinator at the sending institution.</p>
+      </div>
+      <div class="card">
+        <div class="field-grid">
+          <div class="field-group">
+            <label>Name of Responsible Coordinator <span class="req">*</span></label>
+            <input type="text" id="conf-name" placeholder="e.g. Prof. Li Wei" />
+            <span class="field-error">This field is required.</span>
+          </div>
+          <div class="field-group">
+            <label>Position <span class="req">*</span></label>
+            <input type="text" id="conf-position" placeholder="e.g. International Exchange Coordinator, HZAU" />
+            <span class="field-error">This field is required.</span>
+          </div>
+          <div class="field-group">
+            <label>Date <span class="req">*</span></label>
+            <input type="date" id="conf-date" />
+            <span class="field-error">This field is required.</span>
+          </div>
+          <div class="field-group">
+            <label>Official Stamp / Signature (scan, optional)</label>
+            <div class="file-upload-area">
+              <input type="file" id="file-stamp" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile('stamp',this)" />
+              <div class="file-upload-icon">🖋️</div>
+              <div class="file-upload-text"><strong>Click to upload</strong></div>
+              <div class="file-upload-hint">JPG or PNG scan · Optional</div>
+            </div>
+            <div class="file-chosen" id="chosen-stamp" style="display:none">
+              <span>📄</span><span id="name-stamp"></span>
+              <button class="remove-file" onclick="removeFile('stamp')">✕</button>
+            </div>
+          </div>
+          <div class="field-group span-2">
+            <label class="check-item" style="cursor:pointer">
+              <input type="checkbox" id="final-confirm" />
+              <span class="check-label">
+                I confirm that all information provided in this form is accurate and complete to the best of my knowledge, and that all required supporting documents have been attached. <span class="req">*</span>
+              </span>
+            </label>
+            <span class="field-error" id="final-confirm-error">Please confirm before submitting.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- REVIEW SUMMARY -->
+      <div class="card" style="margin-top:24px">
+        <div class="step-number" style="margin-bottom:14px">Review Your Submission</div>
+        <div id="review-container"></div>
+      </div>
+
+      <div class="nav-bar">
+        <button class="btn btn-secondary" onclick="goBack(9)"><span class="btn-icon">←</span> Back</button>
+        <button class="btn btn-primary" id="submit-btn" onclick="submitForm()">Submit Nomination <span class="btn-icon">✓</span></button>
+      </div>
+    </div>
+
+  </main><!-- /form-main -->
+
+  <!-- SUCCESS SCREEN -->
+  <div id="success-screen">
+    <div class="success-icon">✅</div>
+    <h2>Nomination Submitted!</h2>
+    <p>Thank you. The nomination has been recorded successfully. The Faculty of Agriculture, Chiang Mai University will be in touch with the student and coordinator at HZAU soon. <br><br>Program dates: <strong>18 July – 26 July 2026</strong>.</p>
+  </div>
+
+  <!-- LOADING -->
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+    <p>Submitting nomination…</p>
+  </div>
+
+  <footer>
+    © College of Horticulture &amp; Forestry Sciences, Huazhong Agricultural University (HZAU) &nbsp;·&nbsp; Student Nomination Form &nbsp;·&nbsp; Exchange / Short-term Academic Program for Faculty of Agriculture, CMU Thailand
+  </footer>
+</div><!-- /page-shell -->
+
+<script>
+/* ─────────────────────────────────────────────────────────────
+   CONFIGURATION — paste your Apps Script Web App URL here
+   ─────────────────────────────────────────────────────────── */
+const APPS_SCRIPT_URL = "YOUR_APPS_SCRIPT_URL_HERE";
+
+/* ─────────────────────────────────────────────────────────────
+   STEP LABELS
+   ─────────────────────────────────────────────────────────── */
+const STEP_LABELS = [
+  "Sending Institution",
+  "Student Personal Info",
+  "Contact Information",
+  "Academic Information",
+  "Funding Information",
+  "Health & Special Support",
+  "Emergency Contact",
+  "Required Documents",
+  "Coordinator Confirmation"
+];
+
+/* ─────────────────────────────────────────────────────────────
+   STATE
+   ─────────────────────────────────────────────────────────── */
+let currentStep = 1;
+const TOTAL_STEPS = 9;
+const files = {}; // key → { name, base64, mimeType }
+
+/* ─────────────────────────────────────────────────────────────
+   INIT
+   ─────────────────────────────────────────────────────────── */
+document.addEventListener("DOMContentLoaded", () => {
+  buildDots();
+  updateProgress();
+  // set today as default for confirmation date
+  document.getElementById("conf-date").value = new Date().toISOString().split("T")[0];
+  // Toggle other funding field
+  document.querySelectorAll('input[name="funding"]').forEach(r => {
+    r.addEventListener("change", () => {
+      document.getElementById("fund-other-detail").style.display =
+        r.value === "Other" && r.checked ? "block" : "none";
+    });
+  });
+  // Drag-and-drop on file areas
+  document.querySelectorAll('.file-upload-area').forEach(area => {
+    area.addEventListener("dragover", e => { e.preventDefault(); area.classList.add("dragover"); });
+    area.addEventListener("dragleave", () => area.classList.remove("dragover"));
+    area.addEventListener("drop", e => {
+      e.preventDefault(); area.classList.remove("dragover");
+      const input = area.querySelector("input[type=file]");
+      if (input && e.dataTransfer.files.length) {
+        input.files = e.dataTransfer.files;
+        input.dispatchEvent(new Event("change"));
+      }
+    });
+  });
+});
+
+/* ─────────────────────────────────────────────────────────────
+   DOTS & PROGRESS
+   ─────────────────────────────────────────────────────────── */
+function buildDots() {
+  const container = document.getElementById("step-dots");
+  for (let i = 1; i <= TOTAL_STEPS; i++) {
+    const d = document.createElement("div");
+    d.className = "step-dot";
+    d.id = `dot-${i}`;
+    container.appendChild(d);
+  }
+}
+function updateProgress() {
+  const pct = Math.round((currentStep / TOTAL_STEPS) * 100);
+  document.getElementById("progress-fill").style.width = pct + "%";
+  document.getElementById("step-counter").textContent = `Step ${currentStep} of ${TOTAL_STEPS}`;
+  document.getElementById("section-label").textContent = STEP_LABELS[currentStep - 1];
+  for (let i = 1; i <= TOTAL_STEPS; i++) {
+    const d = document.getElementById(`dot-${i}`);
+    d.className = "step-dot" + (i < currentStep ? " done" : i === currentStep ? " active" : "");
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   NAVIGATION
+   ─────────────────────────────────────────────────────────── */
+function showStep(n) {
+  document.querySelectorAll(".step-panel").forEach(p => p.classList.remove("active"));
+  const panel = document.querySelector(`.step-panel[data-step="${n}"]`);
+  if (panel) { panel.classList.add("active"); }
+  currentStep = n;
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (n === 9) buildReview();
+}
+
+function goNext(from) {
+  if (!validateStep(from)) return;
+  showStep(from + 1);
+}
+function goBack(from) {
+  showStep(from - 1);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   VALIDATION
+   ─────────────────────────────────────────────────────────── */
+function validateStep(step) {
+  let ok = true;
+  const require = (id, check) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const group = el.closest(".field-group");
+    const pass = check ? check(el) : el.value.trim() !== "";
+    if (group) {
+      group.classList.toggle("has-error", !pass);
+    }
+    if (!pass) ok = false;
+  };
+
+  if (step === 1) {
+    require("inst-name");
+    require("inst-country");
+    require("inst-faculty");
+    require("inst-coordinator");
+    require("inst-email", el => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value));
+  }
+  if (step === 2) {
+    require("stu-name");
+    require("stu-dob");
+    require("stu-nationality");
+    require("stu-passport");
+    require("stu-passport-expiry");
+    require("stu-id");
+    require("stu-degree", el => el.value !== "");
+    require("stu-major");
+  }
+  if (step === 3) {
+    require("con-email", el => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value));
+  }
+  if (step === 4) {
+    require("ac-area");
+  }
+  if (step === 5) {
+    const fundSelected = document.querySelector('input[name="funding"]:checked');
+    if (!fundSelected) {
+      ok = false;
+      // highlight all radio items
+      document.querySelectorAll('.check-item input[name="funding"]').forEach(r => {
+        r.closest(".check-item").style.borderColor = "var(--danger)";
+      });
+    }
+    const confirm = document.getElementById("fund-confirm");
+    const errEl = document.getElementById("fund-confirm-error");
+    if (!confirm.checked) {
+      errEl.style.display = "block";
+      ok = false;
+    } else {
+      errEl.style.display = "none";
+    }
+  }
+  if (step === 7) {
+    require("emg-name");
+    require("emg-relationship", el => el.value !== "");
+  }
+  if (step === 8) {
+    ["passport","transcript","enrollment","recommendation"].forEach(key => {
+      const errEl = document.getElementById(`err-${key}`);
+      const hasFile = !!files[key];
+      if (errEl) errEl.style.display = hasFile ? "none" : "block";
+      if (!hasFile) ok = false;
+    });
+  }
+  if (step === 9) {
+    require("conf-name");
+    require("conf-position");
+    require("conf-date");
+    const confirm = document.getElementById("final-confirm");
+    const errEl = document.getElementById("final-confirm-error");
+    if (!confirm.checked) {
+      errEl.style.display = "block";
+      ok = false;
+    } else {
+      errEl.style.display = "none";
+    }
+  }
+  return ok;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   FILE HANDLING
+   ─────────────────────────────────────────────────────────── */
+function handleFile(key, input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) {
+    alert(`"${file.name}" exceeds the 5 MB size limit. Please choose a smaller file.`);
+    input.value = "";
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const dataUrl = e.target.result;
+    const base64 = dataUrl.split(",")[1];
+    files[key] = { name: file.name, base64, mimeType: file.type };
+    document.getElementById(`chosen-${key}`).style.display = "flex";
+    document.getElementById(`name-${key}`).textContent = file.name;
+    const errEl = document.getElementById(`err-${key}`);
+    if (errEl) errEl.style.display = "none";
+  };
+  reader.readAsDataURL(file);
+}
+function removeFile(key) {
+  delete files[key];
+  document.getElementById(`file-${key}`).value = "";
+  document.getElementById(`chosen-${key}`).style.display = "none";
+}
+
+/* ─────────────────────────────────────────────────────────────
+   REVIEW SUMMARY
+   ─────────────────────────────────────────────────────────── */
+function v(id) {
+  const el = document.getElementById(id);
+  return el ? el.value || "—" : "—";
+}
+function buildReview() {
+  const funding = document.querySelector('input[name="funding"]:checked');
+  const fundOther = v("fund-other-detail");
+  const fundVal = funding ? (funding.value === "Other" ? `Other: ${fundOther}` : funding.value) : "—";
+
+  const sections = [
+    { title: "Sending Institution", items: [
+      ["Institution", v("inst-name")], ["Country", v("inst-country")],
+      ["Faculty / Dept.", v("inst-faculty")], ["Coordinator", v("inst-coordinator")],
+      ["Position", v("inst-position")], ["Email", v("inst-email")],
+      ["Phone", v("inst-phone")]
+    ]},
+    { title: "Student Personal", items: [
+      ["Full Name", v("stu-name")], ["Gender", v("stu-gender")],
+      ["Date of Birth", v("stu-dob")], ["Nationality", v("stu-nationality")],
+      ["Passport No.", v("stu-passport")], ["Passport Expiry", v("stu-passport-expiry")],
+      ["Student ID", v("stu-id")], ["Degree Level", v("stu-degree")],
+      ["Year", v("stu-year")], ["Major", v("stu-major")]
+    ]},
+    { title: "Contact", items: [
+      ["Email", v("con-email")], ["Mobile", v("con-mobile")],
+      ["Home Address", v("con-address")]
+    ]},
+    { title: "Academic", items: [
+      ["Area of Study", v("ac-area")], ["English Proficiency", v("ac-english")]
+    ]},
+    { title: "Funding", items: [["Source", fundVal]]},
+    { title: "Health & Support", items: [
+      ["Food Allergies", v("health-food") || "None declared"],
+      ["Medical Conditions", v("health-medical") || "None declared"],
+      ["Accessibility", v("health-access") || "None declared"]
+    ]},
+    { title: "Emergency Contact", items: [
+      ["Name", v("emg-name")], ["Relationship", v("emg-relationship")],
+      ["Phone", v("emg-phone")], ["Email", v("emg-email")]
+    ]},
+    { title: "Documents Uploaded", items: [
+      ["Passport", files.passport ? `✅ ${files.passport.name}` : "❌ Missing"],
+      ["Transcript", files.transcript ? `✅ ${files.transcript.name}` : "❌ Missing"],
+      ["Enrollment Cert.", files.enrollment ? `✅ ${files.enrollment.name}` : "❌ Missing"],
+      ["Recommendation", files.recommendation ? `✅ ${files.recommendation.name}` : "❌ Missing"],
+      ["English Proof", files.english ? `✅ ${files.english.name}` : "Not provided"]
+    ]}
+  ];
+
+  const container = document.getElementById("review-container");
+  container.innerHTML = sections.map(sec => `
+    <div class="summary-section">
+      <div class="summary-section-title">${sec.title}</div>
+      <dl class="summary-grid">
+        ${sec.items.map(([k,val]) => `<div class="summary-item"><dt>${k}</dt><dd>${val}</dd></div>`).join("")}
+      </dl>
+      <div class="divider"></div>
+    </div>
+  `).join("");
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SUBMISSION
+   ─────────────────────────────────────────────────────────── */
+async function submitForm() {
+  if (!validateStep(9)) return;
+
+  const funding = document.querySelector('input[name="funding"]:checked');
+  const fundOther = v("fund-other-detail");
+  const fundVal = funding ? (funding.value === "Other" ? `Other: ${fundOther}` : funding.value) : "";
+
+  const payload = {
+    // Section 1
+    instName:        v("inst-name"),
+    instCountry:     v("inst-country"),
+    instFaculty:     v("inst-faculty"),
+    instCoordinator: v("inst-coordinator"),
+    instPosition:    v("inst-position"),
+    instEmail:       v("inst-email"),
+    instPhone:       v("inst-phone"),
+    // Section 2
+    stuName:         v("stu-name"),
+    stuGender:       v("stu-gender"),
+    stuDob:          v("stu-dob"),
+    stuNationality:  v("stu-nationality"),
+    stuPassport:     v("stu-passport"),
+    stuPassportExpiry: v("stu-passport-expiry"),
+    stuId:           v("stu-id"),
+    stuDegree:       v("stu-degree"),
+    stuYear:         v("stu-year"),
+    stuMajor:        v("stu-major"),
+    // Section 3
+    conEmail:        v("con-email"),
+    conMobile:       v("con-mobile"),
+    conAddress:      v("con-address"),
+    // Section 4
+    acArea:          v("ac-area"),
+    acResearch:      v("ac-research"),
+    acEnglish:       v("ac-english"),
+    acCourses:       v("ac-courses"),
+    // Section 5
+    funding:         fundVal,
+    // Section 6
+    healthFood:      v("health-food"),
+    healthMedical:   v("health-medical"),
+    healthAccess:    v("health-access"),
+    // Section 7
+    emgName:         v("emg-name"),
+    emgRelationship: v("emg-relationship"),
+    emgPhone:        v("emg-phone"),
+    emgEmail:        v("emg-email"),
+    // Section 9
+    confName:        v("conf-name"),
+    confPosition:    v("conf-position"),
+    confDate:        v("conf-date"),
+    // Files
+    files: {
+      passport:       files.passport       || null,
+      transcript:     files.transcript     || null,
+      enrollment:     files.enrollment     || null,
+      recommendation: files.recommendation || null,
+      english:        files.english        || null,
+      stamp:          files.stamp          || null,
+    },
+    submittedAt: new Date().toISOString()
+  };
+
+  // Show loading
+  document.getElementById("loading-overlay").classList.add("active");
+  document.getElementById("submit-btn").disabled = true;
+
+  try {
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify(payload)
+    });
+    const result = await res.json();
+    if (result.status === "success") {
+      document.getElementById("form-main").style.display = "none";
+      document.getElementById("progress-wrap").style.display = "none";
+      document.getElementById("success-screen").classList.add("active");
+    } else {
+      throw new Error(result.message || "Unknown error");
+    }
+  } catch (err) {
+    alert("Submission failed: " + err.message + "\n\nPlease check the APPS_SCRIPT_URL configuration or try again.");
+    document.getElementById("submit-btn").disabled = false;
+  } finally {
+    document.getElementById("loading-overlay").classList.remove("active");
+  }
+}
+</script>
+</body>
+</html>
